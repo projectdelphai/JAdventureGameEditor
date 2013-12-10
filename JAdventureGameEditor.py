@@ -86,28 +86,28 @@ def createtile(current_position,data,direction):
         new_coordinate = "%s,%s,%s" % (x,str(int(y)+1),z)
         try:
             new_position = data.get("%s,%s,%s" % (x,str(int(y)+1),z)).get("title")
-            return []
+            return data
         except:
             None
     elif (direction == "s"):
         new_coordinate = "%s,%s,%s" % (x,str(int(y)-1),z)
         try:
             new_position = data.get("%s,%s,%s" % (x,str(int(y)-1),z)).get("title")
-            return []
+            return data
         except:
             None
     elif (direction == "e"):
         new_coordinate = "%s,%s,%s" %  (str(int(x)+1),y,z)
         try: 
             new_position = data.get("%s,%s,%s" %  (str(int(x)+1),y,z)).get("title")
-            return []
+            return data
         except:
             None
     elif (direction == "w"):
         new_coordinate = "%s,%s,%s" %  (str(int(x)-1),y,z)
         try: 
             new_position = data.get("%s,%s,%s" %  (str(int(x)-1),y,z)).get("title")
-            return []
+            return data
         except:
             None
     title = input("What is the tile's title?: ")
@@ -116,6 +116,40 @@ def createtile(current_position,data,direction):
     new_data = { "coordinate" : new_coordinate, "title" : title, "description" : description, "locationType" : locationtype }
     data[new_coordinate] = new_data
     return data
+
+def deletetile(current_position,data,direction):
+    coordinate = current_position.get("coordinate").split(',')
+    x = coordinate[0]
+    y = coordinate[1]
+    z = coordinate[2]
+    if (direction == "n"):
+        new_coordinate = "%s,%s,%s" % (x,str(int(y)+1),z)
+        try:
+            new_position = data.get("%s,%s,%s" % (x,str(int(y)+1),z)).get("title")
+        except:
+            return data
+    elif (direction == "s"):
+        new_coordinate = "%s,%s,%s" % (x,str(int(y)-1),z)
+        try:
+            new_position = data.get("%s,%s,%s" % (x,str(int(y)-1),z)).get("title")
+        except:
+            return data
+    elif (direction == "e"):
+        new_coordinate = "%s,%s,%s" %  (str(int(x)+1),y,z)
+        try: 
+            new_position = data.get("%s,%s,%s" %  (str(int(x)+1),y,z)).get("title")
+        except:
+            return data
+    elif (direction == "w"):
+        new_coordinate = "%s,%s,%s" %  (str(int(x)-1),y,z)
+        try: 
+            new_position = data.get("%s,%s,%s" %  (str(int(x)-1),y,z)).get("title")
+        except:
+            return data
+    del data[new_coordinate]
+    return data
+
+
 
 def action(current_position,data,filename):
     while True:
@@ -132,6 +166,15 @@ def action(current_position,data,filename):
             direction = next_action[1:]
             if direction in ["n", "s", "e", "w"]:
                 data = createtile(current_position,data,direction)
+                write_json(data,filename)
+                neighbors = get_neighbors(current_position,data)
+                intro(current_position,neighbors)
+            else:
+                print("Not a valid direction")
+        elif (next_action.startswith("d")):
+            direction = next_action[1:]
+            if direction in ["n", "s", "e", "w"]:
+                data = deletetile(current_position,data,direction)
                 write_json(data,filename)
                 neighbors = get_neighbors(current_position,data)
                 intro(current_position,neighbors)

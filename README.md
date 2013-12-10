@@ -28,6 +28,13 @@ To create a room to the north,south,east,and west:
     ce
     cw
 
+To delete a room to the north,south,east,and west:
+
+    dn
+    ds
+    de
+    dw
+
 The standard title for a corridor undergorund is:
 
     Dark Corridor
