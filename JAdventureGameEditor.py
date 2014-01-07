@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 import json
+import matplotlib.pyplot as plt
 
 def load_json(filename):
     with open(filename, 'r') as f:
@@ -14,10 +15,36 @@ def write_json(data,filename):
 
 def menu():
     while True:
+        file_name = "json/locations.json"
         print("1. Locations")
-        item = input("What do you want to edit: ")
+        print("2. Show Locations")
+        item = input("What do you want to do?: ")
         if item == "1":
-            return "json/locations.json"
+            data = load_json(file_name)
+            current_position = get_current_position(data)
+            neighbors = get_neighbors(current_position,data)
+            intro(current_position,neighbors)
+            action(current_position,data,filename)
+        if item == "2":
+            plot_locations(file_name)
+
+def plot_locations(file_name):
+    data = load_json(file_name)
+    underground = []
+    aboveground = []
+    for full_coordinate in data.keys():
+        full_coordinate = full_coordinate.split(",")
+        if full_coordinate[2] == "-1":
+            coordinate = [ full_coordinate[0], full_coordinate[1] ]
+            underground.append(coordinate)
+        else:
+            coordinate = [ full_coordinate[0], full_coordinate[1] ]
+            aboveground.append(coordinate)
+    for (x, y) in underground:
+        plt.plot(x, y, 'bo-')
+    plt.grid(True)
+    plt.autoscale(True)
+    plt.show()
 
 def get_current_position(data):
     while True:
@@ -181,12 +208,5 @@ def action(current_position,data,filename):
             else:
                 print("Not a valid direction")
 
-def start():
-    filename = menu()
-    data = load_json(filename)
-    current_position = get_current_position(data)
-    neighbors = get_neighbors(current_position,data)
-    intro(current_position,neighbors)
-    action(current_position,data,filename)
 
-start()
+menu()

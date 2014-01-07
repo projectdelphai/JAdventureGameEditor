@@ -5,8 +5,14 @@ Description
 ---------------
 A simple python script to make it easier to rewrite JAdventure game files. The eventual plan may be to create a gui, but for now, this is a quick way to do it rather than editing json files by hand.
 
+Dependencies
+---------------
+numpy and matplotlib
+
 Usage
 ---------------
+**Note:** When displaying locations, you need to encompass the points on the end. And it only displays the underground for now.
+You can change underground to aboveground in the code to get aboveground views.
 
 To start:
 
