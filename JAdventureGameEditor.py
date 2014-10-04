@@ -24,11 +24,14 @@ def menu():
             current_position = get_current_position(data)
             neighbors = get_neighbors(current_position,data)
             intro(current_position,neighbors)
-            action(current_position,data,filename)
+            action(current_position,data,file_name)
         if item == "2":
-            plot_locations(file_name)
+            z = input("What level do you want to show?: ")
+            plot_locations(file_name,z)
+        if item == "exit":
+            break;
 
-def plot_locations(file_name):
+def plot_locations(file_name,z):
     data = load_json(file_name)
     underground = []
     aboveground = []
@@ -40,8 +43,12 @@ def plot_locations(file_name):
         else:
             coordinate = [ full_coordinate[0], full_coordinate[1] ]
             aboveground.append(coordinate)
-    for (x, y) in underground:
-        plt.plot(x, y, 'bo-')
+    if z == "-1":
+        for (x, y) in underground:
+            plt.plot(x, y, 'bo-')
+    else:
+        for (x, y) in aboveground:
+            plt.plot(x, y, 'bo-')
     plt.grid(True)
     plt.autoscale(True)
     plt.show()
@@ -139,8 +146,9 @@ def createtile(current_position,data,direction):
             None
     title = input("What is the tile's title?: ")
     description = input("What is the tile's description?: ")
-    locationtype = input("What is the tile's locationType?: ")
-    new_data = { "coordinate" : new_coordinate, "title" : title, "description" : description, "locationType" : locationtype }
+    location_type = input("What is the tile's locationType?: ")
+    danger_rating = input("What is the tiles's dangerRating?: ")
+    new_data = { "coordinate" : new_coordinate, "title" : title, "description" : description, "locationType" : location_type, "danger": danger_rating }
     data[new_coordinate] = new_data
     return data
 
@@ -181,14 +189,14 @@ def deletetile(current_position,data,direction):
 def action(current_position,data,filename):
     while True:
         next_action = input("What do you want to do?: ")
-        if (next_action.startswith("m")):
+        if (next_action.startswith("g")):
             direction = next_action[1:]
             if direction in ["n", "s", "e", "w"]:
                 current_position = go(direction,current_position,data)
                 neighbors = get_neighbors(current_position,data)
                 intro(current_position,neighbors)
             else:
-                print("Not a valid directioN")
+                print("Not a valid direction")
         elif (next_action.startswith("c")):
             direction = next_action[1:]
             if direction in ["n", "s", "e", "w"]:
@@ -207,6 +215,10 @@ def action(current_position,data,filename):
                 intro(current_position,neighbors)
             else:
                 print("Not a valid direction")
-
-
+        elif (next_action.startswith("t")):
+            current_position = get_current_position(data)
+            neighbors = get_neighbors(current_position,data)
+            intro(current_position,neighbors)
+        elif (next_action.startswith("exit")):
+            break;
 menu()
