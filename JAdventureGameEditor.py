@@ -148,7 +148,15 @@ def createtile(current_position,data,direction):
     description = input("What is the tile's description?: ")
     location_type = input("What is the tile's locationType?: ")
     danger_rating = input("What is the tiles's dangerRating?: ")
-    new_data = { "coordinate" : new_coordinate, "title" : title, "description" : description, "locationType" : location_type, "danger": danger_rating }
+    items = [] 
+    item = input("Add item to the tile? (Leave blank for no items) ")
+    while item.strip() != "": 
+        items.append(item)
+        item = input("Add item to the tile? (Leave blank for no more items) ")
+    if (len(items) != 0):
+        new_data = { "coordinate" : new_coordinate, "title" : title, "description" : description, "locationType" : location_type, "danger": danger_rating, "items": items}
+    else:
+        new_data = { "coordinate" : new_coordinate, "title" : title, "description" : description, "locationType" : location_type, "danger": danger_rating }
     data[new_coordinate] = new_data
     return data
 
