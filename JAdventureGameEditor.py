@@ -196,7 +196,7 @@ def deletetile(current_position,data,direction):
 
 def action(current_position,data,filename):
     while True:
-        next_action = input("What do you want to do?: ")
+        next_action = input("\nWhat do you want to do?: ")
         if (next_action.startswith("g")):
             direction = next_action[1:]
             if direction in ["n", "s", "e", "w"]:
